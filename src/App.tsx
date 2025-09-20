@@ -2,8 +2,8 @@ import './App.scss';
 import { useState } from 'react';
 import usersFromServer from './api/users';
 import todosFromServer from './api/todos';
-import { Todo } from '../../types/Todo';
-import { TodoList } from './componen/ts/TodoList/TodoList';
+import { Todo } from './components/types/Todo';
+import { TodoList } from './components/TodoList/TodoList';
 
 export const App = () => {
   const [todos, setTodos] = useState<Todo[]>(todosFromServer);
@@ -26,6 +26,7 @@ export const App = () => {
 
   const handleUserChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newUserId = Number(event.target.value);
+
     setUserId(newUserId);
 
     if (userError) {
@@ -82,7 +83,12 @@ export const App = () => {
 
       <form onSubmit={handleSubmit}>
         <div className="field">
+          {/* Додано label для title input */}
+          <label htmlFor="title-input" className="label">
+            Title
+          </label>
           <input
+            id="title-input"
             type="text"
             data-cy="titleInput"
             value={title}
@@ -97,7 +103,12 @@ export const App = () => {
         </div>
 
         <div className="field">
+          {/* Додано label для user select */}
+          <label htmlFor="user-select" className="label">
+            User
+          </label>
           <select
+            id="user-select"
             data-cy="userSelect"
             value={userId}
             onChange={handleUserChange}

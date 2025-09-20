@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { User } from '../types/Todo';
 
 interface Props {
   user: User;
