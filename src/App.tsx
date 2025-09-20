@@ -2,6 +2,8 @@ import './App.scss';
 import { useState } from 'react';
 import usersFromServer from './api/users';
 import todosFromServer from './api/todos';
+import { Todo } from '../../types/Todo';
+import { TodoList } from './componen/ts/TodoList/TodoList';
 
 export const App = () => {
   const [todos, setTodos] = useState<Todo[]>(todosFromServer);
@@ -10,8 +12,8 @@ export const App = () => {
   const [titleError, setTitleError] = useState('');
   const [userError, setUserError] = useState('');
 
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let newTitle = e.target.value;
+  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    let newTitle = event.target.value;
 
     newTitle = newTitle.replace(/[^a-zA-Zа-яА-ЯіІїЇєЄ0-9\s]/g, '');
 
@@ -22,9 +24,8 @@ export const App = () => {
     }
   };
 
-  const handleUserChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const newUserId = Number(e.target.value);
-
+  const handleUserChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newUserId = Number(event.target.value);
     setUserId(newUserId);
 
     if (userError) {
@@ -32,8 +33,8 @@ export const App = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
 
     let isValid = true;
 
@@ -69,7 +70,6 @@ export const App = () => {
 
     setTodos(prevTodos => [...prevTodos, newTodo]);
 
-    // Clear form
     setTitle('');
     setUserId(0);
     setTitleError('');
@@ -124,23 +124,7 @@ export const App = () => {
         </button>
       </form>
 
-      <section className="TodoList">
-        {todos.map(todo => (
-          <article
-            key={todo.id}
-            data-id={todo.id}
-            className={`TodoInfo ${todo.completed ? 'TodoInfo--completed' : ''}`}
-          >
-            <h2 className="TodoInfo__title">{todo.title}</h2>
-
-            {todo.user && (
-              <a className="UserInfo" href={`mailto:${todo.user.email}`}>
-                {todo.user.name}
-              </a>
-            )}
-          </article>
-        ))}
-      </section>
+      <TodoList todos={todos} />
     </div>
   );
 };
